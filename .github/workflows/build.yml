@@ -7,6 +7,13 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
+      - name: Run `npm install -g csv2geojson`
+        run: npm install -g csv2geojson
+
+      - name: Convert CSV to GeoJSON
+        run: |
+          for file in *.csv; { csv2geojson --lat 緯度 --lon 経度 "$file" > ./$(basename -s ".csv" $file).geojson; }
+
       - name: 'Generate vector tiles as *.mvt'
         uses: geolonia/vector-tiles-action@main
         id: generate_vector_tiles
